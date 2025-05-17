@@ -1,0 +1,29 @@
+﻿<Window x:Class="WarehouseAccounting.View.ProductsAdd"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WarehouseAccounting.View"
+        mc:Ignorable="d"
+        Title="ProductsAdd" Height="450" Width="800">
+    <Grid>
+        <GroupBox Header="Добавить товар" Margin="10">
+            <StackPanel>
+                <TextBlock Text="Название:" Margin="0,5"/>
+                <TextBox Text="{Binding CurrentProduct.product_name, UpdateSourceTrigger=PropertyChanged}"/>
+                
+                <TextBlock Text="Категория:" Margin="0,5"/>
+                <TextBox Text="{Binding CurrentProduct.category}" AcceptsReturn="True" Height="60"/>
+
+                <TextBlock Text="Цена:" Margin="0,5"/>
+                <TextBox Text="{Binding CurrentProduct.price}"/>
+
+                <TextBlock Text="Количество:" Margin="0,5"/>
+                <TextBox Text="{Binding CurrentProduct.unit}"/>
+                <Button Content="Добавить товар" 
+                        Command="{Binding AddCommand}" 
+                        Width="150"/>       
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</Window>

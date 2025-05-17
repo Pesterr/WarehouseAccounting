@@ -1,0 +1,200 @@
+﻿<Window x:Class="WarehouseAccounting.View.Main"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WarehouseAccounting.View"
+        mc:Ignorable="d"
+        Title="Главный экран" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        
+    <Grid Background="#D5E8D4">
+        
+        
+        <!-- Табы -->
+        <TabControl Name="MainTabControl" Margin="5" Background="#D5E8D4" >
+            
+
+            <!-- Заказы -->
+            <TabItem Header="Заказы" Width="100">
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+
+                        <ColumnDefinition Width="37*"/>
+                        <ColumnDefinition Width="75*"/>
+
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Заголовок -->
+                    <StackPanel>
+                        
+                    </StackPanel>
+                    <TextBlock VerticalAlignment="Center" Text="Количество активных заказов:" Margin="5,0,0,0" HorizontalAlignment="Left"/>
+                    <Button Content="Добавить заказ" Margin="5" Grid.Column="1" Width="150" VerticalAlignment="Center" HorizontalAlignment="Right" Click="OrderAdd"/>
+                    <DataGrid ItemsSource="{Binding Orders}" Grid.Row="1" AutoGenerateColumns="False" Margin="5,5,5,5" Background="#D5E8D4" Grid.ColumnSpan="2" >
+                        <DataGrid.Columns >
+                            <DataGridTextColumn Header="№" Binding="{Binding order_id}" Width="50" />
+                            <DataGridTextColumn Header="Имя заказчика" Binding="{Binding client_name}" Width="150"/>
+                            <DataGridTextColumn Header="ID Товара" Binding="{Binding product_id}" Width="100"/>
+                            <DataGridTextColumn Header="Название товара" Binding="{Binding product_name}" Width="200"/>
+                            <DataGridTextColumn Header="Количество" Binding="{Binding unit}" Width="100"/>
+                            <DataGridTemplateColumn Header="Статус">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <!-- ToggleButton для переключения статуса -->
+                                        <ToggleButton Content="{Binding StatusText}" 
+                                  IsChecked="{Binding IsAssembled}"
+                                  Width="100"
+                                  >
+                                            <ToggleButton.Style>
+                                                <Style TargetType="ToggleButton">
+                                                    <Setter Property="Background" Value="LightCoral"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsChecked" Value="True">
+                                                            <Setter Property="Background" Value="LightGreen"/>
+                                                            <Setter Property="Content" Value="Собран"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsChecked" Value="False">
+                                                            <Setter Property="Background" Value="LightCoral"/>
+                                                            <Setter Property="Content" Value="Не собран"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ToggleButton.Style>
+                                        </ToggleButton>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Товары -->
+            <TabItem Header="Товары" Width="100" Height="20" VerticalAlignment="Bottom">
+                <Grid DataContext="{Binding Source={StaticResource ProductViewModel}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="533*"/>
+                        <ColumnDefinition Width="251*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="4">
+                        <TextBlock Text="Поиск" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBox Width="200" Height="30" Margin="5"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"
+                                 FontSize="16"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5,5,5,5" Grid.ColumnSpan="2">
+                        <Button Content="Добавить товар" Click="ProductAdd" />
+                        <Button Content="Удалить товар" Command="{Binding DeleteCommand}" />
+                        <Button Content="Обновить" Command="{Binding RefreshCommand}"/>
+                    </StackPanel>
+                    <GridSplitter Grid.Row="1" HorizontalAlignment="Left" Width="5" Background="Gray" ResizeBehavior="PreviousAndNext" Grid.Column="1" Margin="246,0,0,0" />
+
+                    <Grid Grid.Row="1" Margin="5,5,5,5" Grid.ColumnSpan="2">
+                        <Grid.Resources>
+                            <ContextMenu x:Key="RefreshContextMenu">
+                                <MenuItem Header="Обновить"
+                                          Command="{Binding DataContext.RefreshCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                <MenuItem Header="Удалить"
+                                          Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                          CommandParameter="{Binding product_id}" />
+                            </ContextMenu>
+                        </Grid.Resources>
+
+                        <GridSplitter Grid.Column="1" VerticalAlignment="Top" Height="5" Background="Gray" ResizeBehavior="CurrentAndNext" />
+
+                        <Grid Grid.Column="1" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <DataGrid ItemsSource="{Binding FilteredProductsList}"
+                                      SelectedItem="{Binding SelectedProduct}"
+                                      Grid.Row="1" 
+                                      Margin="5" 
+                                      Background="#D5E8D4">        
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID Товара" Binding="{Binding product_id}" Width="200"/>
+                                    <DataGridTextColumn Header="Название товара" Binding="{Binding product_name}" Width="200"/>
+                                    <DataGridTextColumn Header="Категория" Binding="{Binding category}" Width="121"/>
+                                    <DataGridTextColumn Header="Количество" Binding="{Binding unit}" Width="80"/>
+                                    <DataGridTextColumn Header="Цена" Binding="{Binding price}" Width="125"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                        
+                    </Grid> 
+                    
+                </Grid>
+            </TabItem>
+
+            <!-- Профиль -->
+            <TabItem Header="Профиль" Width="100" HorizontalAlignment="Right">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="184"/>
+                        <ColumnDefinition Width="66"/>
+                        <ColumnDefinition Width="280"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="10,10,10,10" Grid.ColumnSpan="2">
+                        <TextBlock Text="Редактирование данных" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="ФИО:" Width="60" VerticalAlignment="Center"/>
+                            <TextBox Width="165" Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Должность:" Width="60" VerticalAlignment="Center"/>
+                            <TextBox Width="165" Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Номер:" Width="60" VerticalAlignment="Center"/>
+                            <TextBox Width="165" Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Почта:" Width="60" VerticalAlignment="Center"/>
+                            <TextBox Width="165" Margin="5"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Margin="10,10,10,10">
+                        <TextBlock Text="Изменение пароля" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Старый пароль:" Width="90" VerticalAlignment="Center"/>
+                            <PasswordBox Width="165" Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Новый пароль:" Width="90" VerticalAlignment="Center"/>
+                            <PasswordBox Width="165" Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Подтверждение:" Width="91" VerticalAlignment="Center"/>
+                            <PasswordBox Width="165" Margin="4"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Margin="10,10,10,10">
+                        <TextBlock Text="Изменить/Добавить фото" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                        <Image Source="cat.jpg" Width="150" Height="150" Stretch="UniformToFill" Margin="5"/>
+                        <Button Content="Выбрать файл" Width="100" Height="30" Margin="5" Background="#B9E0A5"/>
+                    </StackPanel>
+                    <Button Content="Сохранить изменения" Background="#B9E0A5" Width="200" Height="30" Margin="42,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="2"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

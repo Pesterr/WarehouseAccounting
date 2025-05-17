@@ -1,0 +1,22 @@
+﻿<Window x:Class="WarehouseAccounting.View.Authorisation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WarehouseAccounting.View"
+        mc:Ignorable="d"
+        Title="Авторизация" Height="490" Width="760" WindowStartupLocation="CenterScreen">
+    <Grid Background="#D5E8D4">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="Авторизация" HorizontalAlignment="Center" FontSize="27" Margin="0 0 0 10"/>
+            <Label Content="Логин"/>
+            <TextBox x:Name="RegLogin" Text="{Binding Employee.login}" Height="30" Width="305" FontSize="20" Margin="6 -3 6 6" Foreground="Gray"/>
+            <Label Content="Пароль"/>
+            <PasswordBox Height="30" Width="305" x:Name="LogPassword" FontSize="20" Margin="6 -3 6 6" Foreground="Gray"/>
+            <Button Height="36" Width="160" Margin="6" Background="#FFBEBCBC" Content="Авторизоваться" FontSize="12" FontWeight="Bold" BorderBrush="#00000000" Click="LoginButton_Click"/>
+        </StackPanel>
+        <Button Content="Зарегистрироваться" Background="#00000000" Width="135" Height="25" Margin="10" FontSize="14" BorderBrush="#00000000" Foreground="#FFA680B8" VerticalAlignment="Bottom" Click="RegistrationClick" />
+
+
+    </Grid>
+</Window>

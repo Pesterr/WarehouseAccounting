@@ -1,0 +1,10 @@
+﻿<Application x:Class="WarehouseAccounting.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:WarehouseAccounting"
+             xmlns:vm="clr-namespace:WarehouseAccounting.ViewModel"
+             StartupUri="View/Main.xaml">
+    <Application.Resources>
+        <vm:ProductViewModel x:Key="ProductViewModel" />
+    </Application.Resources>
+</Application>

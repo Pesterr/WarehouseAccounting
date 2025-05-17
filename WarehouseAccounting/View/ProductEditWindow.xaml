@@ -5,26 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WarehouseAccounting.View"
         mc:Ignorable="d"
-        Title="ProductEditWindow" Height="450" Width="800">
-    <Grid Margin="10">
+        Title="Редактирование товара" Height="320" Width="400"  WindowStartupLocation="CenterScreen">
+    <Grid Background="#D5E8D4">
         <StackPanel>
-            <TextBlock Text="Название товара:" />
-            <TextBox Text="{Binding CurrentProduct.product_name}" />
+            <TextBlock Text="Название товара:" FontSize="15" Margin=" 10 5 10 0" />
+            <TextBox Text="{Binding CurrentProduct.product_name}" Margin="10 0 10 10" Height="25"/>
 
-            <TextBlock Text="Категория:" />
-            <TextBox Text="{Binding CurrentProduct.category}" />
+            <TextBlock Text="Категория:" FontSize="15" Margin=" 10 0 10 0"/>
+            <TextBox Text="{Binding CurrentProduct.category}" Margin="10 0 10 10" Height="25"/>
 
-            <TextBlock Text="Единицы измерения:" />
-            <TextBox Text="{Binding CurrentProduct.unit}" />
+            <TextBlock Text="Количество:" FontSize="15" Margin=" 10 0 10 0"/>
+            <TextBox Text="{Binding CurrentProduct.unit}" Margin="10 0 10 10" Height="25"/>
 
-            <TextBlock Text="Цена:" />
-            <TextBox Text="{Binding CurrentProduct.price}" />
+            <TextBlock Text="Цена:" FontSize="15" Margin=" 10 0 10 0"/>
+            <TextBox Text="{Binding CurrentProduct.price}" Margin="10 0 10 10"  Height="25"/>
 
             <Button Content="Сохранить изменения" 
-                    
+                    Click="Save_Click"
                     Width="180" 
-                    HorizontalAlignment="Left" 
-                    Margin="0,10,0,0"/>
+                    HorizontalAlignment="Center" 
+                    Margin="0,10,0,0"
+                    Height="25"
+                    Background="#B9E0A5"/>
         </StackPanel>
     </Grid>
 </Window>

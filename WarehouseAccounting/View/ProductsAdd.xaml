@@ -5,25 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WarehouseAccounting.View"
         mc:Ignorable="d"
-        Title="ProductsAdd" Height="450" Width="800">
-    <Grid>
-        <GroupBox Header="Добавить товар" Margin="10">
+        Title="Добавление товара" Height="320" Width="400"  WindowStartupLocation="CenterScreen">
+    <Grid Background="#D5E8D4">
             <StackPanel>
-                <TextBlock Text="Название:" Margin="0,5"/>
-                <TextBox Text="{Binding CurrentProduct.product_name, UpdateSourceTrigger=PropertyChanged}"/>
-                
-                <TextBlock Text="Категория:" Margin="0,5"/>
-                <TextBox Text="{Binding CurrentProduct.category}" AcceptsReturn="True" Height="60"/>
+                <TextBlock Text="Название товара:" FontSize="15" Margin=" 10 5 10 0" />
+                <TextBox Text="{Binding CurrentProduct.product_name}" Margin="10 0 10 10" Height="25"/>
 
-                <TextBlock Text="Цена:" Margin="0,5"/>
-                <TextBox Text="{Binding CurrentProduct.price}"/>
+                <TextBlock Text="Категория:" FontSize="15" Margin=" 10 0 10 0"/>
+                <TextBox Text="{Binding CurrentProduct.category}" Margin="10 0 10 10" Height="25"/>
 
-                <TextBlock Text="Количество:" Margin="0,5"/>
-                <TextBox Text="{Binding CurrentProduct.unit}"/>
+                <TextBlock Text="Количество:" FontSize="15" Margin=" 10 0 10 0"/>
+                <TextBox Text="{Binding CurrentProduct.unit}" Margin="10 0 10 10" Height="25"/>
+
+                <TextBlock Text="Цена:" FontSize="15" Margin=" 10 0 10 0"/>
+                <TextBox Text="{Binding CurrentProduct.price}" Margin="10 0 10 10"  Height="25"/>
                 <Button Content="Добавить товар" 
                         Command="{Binding AddCommand}" 
-                        Width="150"/>       
+                        Width="150"
+                        Height="25"
+                        Background="#B9E0A5"/>       
             </StackPanel>
-        </GroupBox>
     </Grid>
 </Window>

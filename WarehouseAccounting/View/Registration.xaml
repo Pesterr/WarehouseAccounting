@@ -21,7 +21,7 @@
             <TextBox Text="{Binding Employee.phone}" Height="30" Width="310" FontSize="20" Margin="6 -3 6 2" Foreground="Gray" x:Name="RegPhone"/>
             <Label Content="Пароль"/>
             <PasswordBox Height="30" Width="310" FontSize="20" Margin="6 -3 6 2" Foreground="Gray" x:Name="RegPassword" />
-            <Button Height="36" Width="160" Margin="6" Background="#FFBEBCBC" Content="Зарегистрироваться" FontSize="12" FontWeight="Bold" BorderBrush="#00000000" Click="RegisterButton_Click"/>
+            <Button Height="36" Width="160" Margin="6" Background="#B9E0A5" Content="Зарегистрироваться" FontSize="12" FontWeight="Bold" BorderBrush="#00000000" Click="RegisterButton_Click"/>
             
         </StackPanel>
         <Button Content="Авторизоваться" Background="#00000000" Width="110" Height="25" Margin="10" FontSize="14" BorderBrush="#00000000" Foreground="#FFA680B8" VerticalAlignment="Bottom" Click="AuthorisationClick" />

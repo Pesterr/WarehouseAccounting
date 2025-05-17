@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WarehouseAccounting.ViewModel;
+using WarehouseAccounting.Model;
 
 namespace WarehouseAccounting.View
 {
@@ -35,6 +36,22 @@ namespace WarehouseAccounting.View
         {
             var orderAdd = new OrdersAdd();
             orderAdd.Show();
+        }
+
+        private void EditProduct_Click(object sender, RoutedEventArgs e)
+        {
+            if (dataGridProducts.SelectedItem is Products selectedProduct)
+            {
+                var editWindow = new ProductEditWindow(selectedProduct);
+                if (editWindow.ShowDialog() == true)
+                {
+                    ((ProductViewModel)DataContext).RefreshCommand.Execute(null);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Выберите товар для редактирования.");
+            }
         }
     }
 }

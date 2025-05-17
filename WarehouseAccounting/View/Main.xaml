@@ -95,9 +95,10 @@
                                  Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5,5,5,5" Grid.ColumnSpan="2">
-                        <Button Content="Добавить товар" Click="ProductAdd" />
-                        <Button Content="Удалить товар" Command="{Binding DeleteCommand}" />
-                        <Button Content="Обновить" Command="{Binding RefreshCommand}"/>
+                        <Button Content="Добавить товар" Click="ProductAdd" Background="#B9E0A5" Width="100" Margin="5"/>
+                        <Button Content="Удалить товар" Command="{Binding DeleteCommand}" Background="#F8CECC" Width="100" Margin="5" />
+                        <Button Content="Обновить" Command="{Binding RefreshCommand}" Background="#B9E0A5" Width="100" Margin="5"/>
+                        <Button Content="Редактировать" Click="EditProduct_Click"  Background="#B9E0A5" Width="100" Margin="5"/>
                     </StackPanel>
                     <GridSplitter Grid.Row="1" HorizontalAlignment="Left" Width="5" Background="Gray" ResizeBehavior="PreviousAndNext" Grid.Column="1" Margin="246,0,0,0" />
 
@@ -120,13 +121,14 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <DataGrid ItemsSource="{Binding FilteredProductsList}"
+                            <DataGrid x:Name="dataGridProducts"
+                                      ItemsSource="{Binding FilteredProductsList}"
                                       SelectedItem="{Binding SelectedProduct}"
                                       Grid.Row="1" 
                                       Margin="5" 
-                                      Background="#D5E8D4">        
+                                      Background="#D5E8D4"
+                                      AutoGenerateColumns="False">        
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="ID Товара" Binding="{Binding product_id}" Width="200"/>
                                     <DataGridTextColumn Header="Название товара" Binding="{Binding product_name}" Width="200"/>
                                     <DataGridTextColumn Header="Категория" Binding="{Binding category}" Width="121"/>
                                     <DataGridTextColumn Header="Количество" Binding="{Binding unit}" Width="80"/>

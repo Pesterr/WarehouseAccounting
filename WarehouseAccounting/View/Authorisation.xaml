@@ -13,7 +13,7 @@
             <TextBox x:Name="RegLogin" Text="{Binding Employee.login}" Height="30" Width="305" FontSize="20" Margin="6 -3 6 6" Foreground="Gray"/>
             <Label Content="Пароль"/>
             <PasswordBox Height="30" Width="305" x:Name="LogPassword" FontSize="20" Margin="6 -3 6 6" Foreground="Gray"/>
-            <Button Height="36" Width="160" Margin="6" Background="#FFBEBCBC" Content="Авторизоваться" FontSize="12" FontWeight="Bold" BorderBrush="#00000000" Click="LoginButton_Click"/>
+            <Button Height="36" Width="160" Margin="6" Background="#B9E0A5" Content="Авторизоваться" FontSize="12" FontWeight="Bold" BorderBrush="#00000000" Click="LoginButton_Click"/>
         </StackPanel>
         <Button Content="Зарегистрироваться" Background="#00000000" Width="135" Height="25" Margin="10" FontSize="14" BorderBrush="#00000000" Foreground="#FFA680B8" VerticalAlignment="Bottom" Click="RegistrationClick" />
 

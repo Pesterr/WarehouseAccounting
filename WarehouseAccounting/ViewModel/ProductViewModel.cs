@@ -12,8 +12,6 @@ namespace WarehouseAccounting.ViewModel
 {
     public class ProductViewModel : INotifyPropertyChanged
     {
-        #region Свойства
-
         private string _searchText = string.Empty;
         public string SearchText
         {
@@ -25,7 +23,6 @@ namespace WarehouseAccounting.ViewModel
                 FilterProducts(); // Обновляем фильтрацию при изменении текста поиска
             }
         }
-
         private Products _selectedProduct;
         public Products SelectedProduct
         {
@@ -36,7 +33,6 @@ namespace WarehouseAccounting.ViewModel
                 OnPropertyChanged();
             }
         }
-
         private ObservableCollection<Products> _productsList;
         public ObservableCollection<Products> ProductsList
         {
@@ -47,7 +43,6 @@ namespace WarehouseAccounting.ViewModel
                 OnPropertyChanged();
             }
         }
-
         private ObservableCollection<Products> _filteredProductsList;
         public ObservableCollection<Products> FilteredProductsList
         {
@@ -58,19 +53,9 @@ namespace WarehouseAccounting.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        #endregion
-
-        #region Команды
-
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand RefreshCommand { get; }
-
-        #endregion
-
-        #region Конструктор
-
         public ProductViewModel()
         {
             LoadData();
@@ -79,18 +64,12 @@ namespace WarehouseAccounting.ViewModel
             DeleteCommand = new RelayCommand(DeleteProduct);
             RefreshCommand = new RelayCommand(RefreshProducts);
         }
-
-        #endregion
-
-        #region Методы
-
         private void LoadData()
         {
             var productsFromDb = ProductsDB.GetDb().SelectAll();
             ProductsList = new ObservableCollection<Products>(productsFromDb);
             FilterProducts(); // Применяем фильтр
         }
-
         private void AddProduct()
         {
             var newProduct = new Products
@@ -111,7 +90,6 @@ namespace WarehouseAccounting.ViewModel
                 MessageBox.Show("Ошибка при добавлении товара.");
             }
         }
-
         private void DeleteProduct()
         {
             if (SelectedProduct == null)
@@ -123,20 +101,16 @@ namespace WarehouseAccounting.ViewModel
             if (ProductsDB.GetDb().Remove(SelectedProduct))
             {
                 LoadData(); // Перечитываем данные
-                MessageBox.Show("Товар удален!");
             }
             else
             {
                 MessageBox.Show("Ошибка при удалении товара.");
             }
         }
-
         private void RefreshProducts()
         {
             LoadData(); // Просто перечитываем данные из БД
-            MessageBox.Show("Список товаров обновлен.");
         }
-
         private void FilterProducts()
         {
             if (string.IsNullOrWhiteSpace(SearchText))
@@ -151,21 +125,14 @@ namespace WarehouseAccounting.ViewModel
 
                 FilteredProductsList = new ObservableCollection<Products>(filtered);
             }
-
             OnPropertyChanged(nameof(FilteredProductsList));
         }
-
-        #endregion
-
-        #region INotifyPropertyChanged
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
-        #endregion
+      
     }
 }

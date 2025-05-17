@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:WarehouseAccounting.View"
         mc:Ignorable="d"
         Title="Главный экран" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-        
+
     <Grid Background="#D5E8D4">
-        
-        
+
+
         <!-- Табы -->
         <TabControl Name="MainTabControl" Margin="5" Background="#D5E8D4" >
-            
+
 
             <!-- Заказы -->
             <TabItem Header="Заказы" Width="100">
@@ -20,8 +20,9 @@
 
                     <Grid.ColumnDefinitions>
 
-                        <ColumnDefinition Width="37*"/>
-                        <ColumnDefinition Width="75*"/>
+                        <ColumnDefinition Width="165*"/>
+                        <ColumnDefinition Width="94*"/>
+                        <ColumnDefinition Width="525*"/>
 
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -30,12 +31,12 @@
                     </Grid.RowDefinitions>
 
                     <!-- Заголовок -->
-                    <StackPanel>
-                        
+                    <StackPanel Grid.ColumnSpan="2" Margin="0,0,0,366" Grid.RowSpan="2">
+
                     </StackPanel>
-                    <TextBlock VerticalAlignment="Center" Text="Количество активных заказов:" Margin="5,0,0,0" HorizontalAlignment="Left"/>
-                    <Button Content="Добавить заказ" Margin="5" Grid.Column="1" Width="150" VerticalAlignment="Center" HorizontalAlignment="Right" Click="OrderAdd"/>
-                    <DataGrid ItemsSource="{Binding Orders}" Grid.Row="1" AutoGenerateColumns="False" Margin="5,5,5,5" Background="#D5E8D4" Grid.ColumnSpan="2" >
+                    <TextBlock VerticalAlignment="Center" Text="Количество активных заказов:" Margin="5,0,0,0" HorizontalAlignment="Left" Grid.ColumnSpan="2"/>
+                    <Button Content="Добавить заказ" Margin="370,0,0,0" Grid.Column="2" Width="150" VerticalAlignment="Center" HorizontalAlignment="Left" Click="OrderAdd"/>
+                    <DataGrid ItemsSource="{Binding Orders}" Grid.Row="1" AutoGenerateColumns="False" Margin="5,5,5,5" Background="#D5E8D4" Grid.ColumnSpan="3" >
                         <DataGrid.Columns >
                             <DataGridTextColumn Header="№" Binding="{Binding order_id}" Width="50" />
                             <DataGridTextColumn Header="Имя заказчика" Binding="{Binding client_name}" Width="150"/>
@@ -75,7 +76,7 @@
             </TabItem>
 
             <!-- Товары -->
-            <TabItem Header="Товары" Width="100" Height="20" VerticalAlignment="Bottom">
+            <TabItem Header="Товары" Width="100" Height="20" VerticalAlignment="Bottom" x:Name="ProductsTabItem">
                 <Grid DataContext="{Binding Source={StaticResource ProductViewModel}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="533*"/>
@@ -96,8 +97,8 @@
                     </StackPanel>
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5,5,5,5" Grid.ColumnSpan="2">
                         <Button Content="Добавить товар" Click="ProductAdd" Background="#B9E0A5" Width="100" Margin="5"/>
-                        <Button Content="Удалить товар" Command="{Binding DeleteCommand}" Background="#F8CECC" Width="100" Margin="5" />
-                        <Button Content="Обновить" Command="{Binding RefreshCommand}" Background="#B9E0A5" Width="100" Margin="5"/>
+                        <Button Content="Удалить товар" Command="{Binding DeleteCommand}" CommandParameter="{Binding SelectedItem.product_id, ElementName=dataGridProducts}" Background="#F8CECC" Width="100" Margin="5" />
+                        <Button Content="Обновить" Command="{Binding RefreshCommand}"  Background="#B9E0A5" Width="100" Margin="5"/>
                         <Button Content="Редактировать" Click="EditProduct_Click"  Background="#B9E0A5" Width="100" Margin="5"/>
                     </StackPanel>
                     <GridSplitter Grid.Row="1" HorizontalAlignment="Left" Width="5" Background="Gray" ResizeBehavior="PreviousAndNext" Grid.Column="1" Margin="246,0,0,0" />
@@ -127,7 +128,7 @@
                                       Grid.Row="1" 
                                       Margin="5" 
                                       Background="#D5E8D4"
-                                      AutoGenerateColumns="False">        
+                                      AutoGenerateColumns="False">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Название товара" Binding="{Binding product_name}" Width="200"/>
                                     <DataGridTextColumn Header="Категория" Binding="{Binding category}" Width="121"/>
@@ -136,15 +137,15 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
-                        
-                    </Grid> 
-                    
+
+                    </Grid>
+
                 </Grid>
             </TabItem>
 
             <!-- Профиль -->
-            <TabItem Header="Профиль" Width="100" HorizontalAlignment="Right">
-                <Grid>
+            <TabItem Header="Профиль" Width="100" HorizontalAlignment="Right" x:Name="ProfileTabItem">
+                <Grid DataContext="{Binding ProfileViewModel}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="184"/>
                         <ColumnDefinition Width="66"/>
@@ -152,48 +153,54 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
+                    <!-- Редактирование данных -->
                     <StackPanel Grid.Column="0" Margin="10,10,10,10" Grid.ColumnSpan="2">
                         <TextBlock Text="Редактирование данных" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="ФИО:" Width="60" VerticalAlignment="Center"/>
-                            <TextBox Width="165" Margin="5"/>
+                            <TextBox Width="165" Margin="5" Text="{Binding CurrentUser.full_name}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Должность:" Width="60" VerticalAlignment="Center"/>
-                            <TextBox Width="165" Margin="5"/>
+                            <TextBox Width="165" Margin="5" Text="{Binding CurrentUser.position}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Номер:" Width="60" VerticalAlignment="Center"/>
-                            <TextBox Width="165" Margin="5"/>
+                            <TextBox Width="165" Margin="5" Text="{Binding CurrentUser.phone}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Почта:" Width="60" VerticalAlignment="Center"/>
-                            <TextBox Width="165" Margin="5"/>
+                            <TextBox Width="165" Margin="5" Text="{Binding CurrentUser.email}"/>
                         </StackPanel>
                     </StackPanel>
 
+                    <!-- Изменение пароля -->
                     <StackPanel Grid.Column="2" Margin="10,10,10,10">
                         <TextBlock Text="Изменение пароля" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Старый пароль:" Width="90" VerticalAlignment="Center"/>
-                            <PasswordBox Width="165" Margin="5"/>
+                            <PasswordBox Width="165" Margin="5" PasswordChanged="OldPassword_PasswordChanged"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Новый пароль:" Width="90" VerticalAlignment="Center"/>
-                            <PasswordBox Width="165" Margin="5"/>
+                            <PasswordBox Width="165" Margin="5" PasswordChanged="NewPassword_PasswordChanged"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Подтверждение:" Width="91" VerticalAlignment="Center"/>
-                            <PasswordBox Width="165" Margin="4"/>
+                            <PasswordBox Width="165" Margin="4" PasswordChanged="ConfirmPassword_PasswordChanged"/>
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="3" Margin="10,10,10,10">
-                        <TextBlock Text="Изменить/Добавить фото" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-                        <Image Source="cat.jpg" Width="150" Height="150" Stretch="UniformToFill" Margin="5"/>
-                        <Button Content="Выбрать файл" Width="100" Height="30" Margin="5" Background="#B9E0A5"/>
-                    </StackPanel>
-                    <Button Content="Сохранить изменения" Background="#B9E0A5" Width="200" Height="30" Margin="42,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="2"/>
+                    <!-- Кнопка сохранения -->
+                    <Button Content="Сохранить изменения"
+                Background="#B9E0A5"
+                Width="200"
+                Height="30"
+                Margin="42,0,0,10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Grid.Column="2"
+                Command="{Binding SaveCommand}"/>
                 </Grid>
             </TabItem>
         </TabControl>

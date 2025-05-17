@@ -21,11 +21,29 @@ namespace WarehouseAccounting.View
     /// </summary>
     public partial class Main : Window
     {
+        
         public Main()
         {
             InitializeComponent();
             DataContext = new ProductViewModel();
         }
+
+        public ProductViewModel ProductViewModel { get; set; }
+
+        public ProfileViewModel ProfileViewModel { get; set; }
+        public Main(Employees currentUser)
+        {
+            InitializeComponent();
+
+            ProfileViewModel = new ProfileViewModel(currentUser);
+            DataContext = this;
+            // Создаём ProductViewModel
+            ProductViewModel = new ProductViewModel();
+
+            // Устанавливаем DataContext для вкладки "Товары"
+            ProductsTabItem.DataContext = ProductViewModel;
+        }
+
         private void ProductAdd(object sender, RoutedEventArgs e)
         {
             var productsAdd = new ProductsAdd();
@@ -34,8 +52,7 @@ namespace WarehouseAccounting.View
         }
         private void OrderAdd(object sender, RoutedEventArgs e)
         {
-            var orderAdd = new OrdersAdd();
-            orderAdd.Show();
+            
         }
 
         private void EditProduct_Click(object sender, RoutedEventArgs e)
@@ -51,6 +68,30 @@ namespace WarehouseAccounting.View
             else
             {
                 MessageBox.Show("Выберите товар для редактирования.");
+            }
+        }
+        
+        private void OldPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passwordBox)
+            {
+                ((ProfileViewModel)DataContext).OldPassword = passwordBox.Password;
+            }
+        }
+
+        private void NewPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passwordBox)
+            {
+                ((ProfileViewModel)DataContext).NewPassword = passwordBox.Password;
+            }
+        }
+
+        private void ConfirmPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passwordBox)
+            {
+                ((ProfileViewModel)DataContext).ConfirmPassword = passwordBox.Password;
             }
         }
     }

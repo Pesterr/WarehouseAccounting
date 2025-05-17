@@ -6,5 +6,6 @@
              StartupUri="View/Authorisation.xaml">
     <Application.Resources>
         <vm:ProductViewModel x:Key="ProductViewModel" />
+        <vm:ProductViewModel x:Key="ProfileViewModel" />
     </Application.Resources>
 </Application>

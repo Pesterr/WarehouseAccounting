@@ -1,6 +1,7 @@
 ﻿using MySqlConnector;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,7 +46,6 @@ namespace WarehouseAccounting.Model
             List<Employees> employees = new List<Employees>();
             if (connection == null)
                 return employees;
-
             if (connection.OpenConnection())
             {
                 var command = connection.CreateCommand("select `id`, `full_name`, `position`, `phone`, `email`, `login`, `password` from `Employees` ");
@@ -55,12 +55,12 @@ namespace WarehouseAccounting.Model
                     while (dr.Read())
                     {
                         int id = dr.GetInt32(0);
-                        string full_name = dr.GetString("full_name");
-                        string position = dr.GetString("position");
-                        string phone = dr.GetString("phone");
-                        string email = dr.GetString("email");
-                        string login = dr.GetString("login");
-                        string password = dr.GetString("password");
+                        string full_name = dr.IsDBNull("full_name") ? string.Empty : dr.GetString("full_name");
+                        string position = dr.IsDBNull("position") ? string.Empty : dr.GetString("position");
+                        string phone = dr.IsDBNull("phone") ? string.Empty : dr.GetString("phone");
+                        string email = dr.IsDBNull("email") ? string.Empty : dr.GetString("email");
+                        string login = dr.IsDBNull("login") ? string.Empty : dr.GetString("login");
+                        string password = dr.IsDBNull("password") ? string.Empty : dr.GetString("password");
 
                         employees.Add(new Employees
                         {
@@ -71,7 +71,6 @@ namespace WarehouseAccounting.Model
                             email = email,
                             login = login,
                             password = password
-
                         });
                     }
                 }
@@ -89,16 +88,26 @@ namespace WarehouseAccounting.Model
             bool result = false;
             if (connection == null)
                 return result;
-
             if (connection.OpenConnection())
             {
-                var mc = connection.CreateCommand($"update `Employees` set `full_name`=@full_name, `position`=@position, `phone=@phone`, `email=@email`, `login=@login`, `password=@password`, where `id` = {edit.id}");
+                var mc = connection.CreateCommand(
+                    @"UPDATE Employees 
+              SET full_name = @full_name, 
+                  position = @position, 
+                  phone = @phone, 
+                  email = @email, 
+                  login = @login, 
+                  password = @password 
+              WHERE id = @id");
+
                 mc.Parameters.Add(new MySqlParameter("full_name", edit.full_name));
                 mc.Parameters.Add(new MySqlParameter("position", edit.position));
                 mc.Parameters.Add(new MySqlParameter("phone", edit.phone));
                 mc.Parameters.Add(new MySqlParameter("email", edit.email));
                 mc.Parameters.Add(new MySqlParameter("login", edit.login));
                 mc.Parameters.Add(new MySqlParameter("password", edit.password));
+                mc.Parameters.Add(new MySqlParameter("id", edit.id));
+
                 try
                 {
                     mc.ExecuteNonQuery();

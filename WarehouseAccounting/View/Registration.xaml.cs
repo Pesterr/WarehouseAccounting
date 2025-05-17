@@ -37,34 +37,82 @@ namespace WarehouseAccounting.View
             this.Close();
         }
 
-        
-        private async void RegisterButton_Click(object sender, RoutedEventArgs e)
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.Employee.password = RegPassword.Password;
+            // Проверяем заполненность полей
+            if (!AreAllFieldsFilled())
+                return;
 
-            try
+            // Получаем данные из формы
+            var viewModel = new RegViewModel();
+            var employee = viewModel.Employee;
+
+            // Присваиваем значения из TextBox и PasswordBox
+            employee.full_name = RegName.Text;
+            employee.position = RegPosition.Text;
+            employee.login = RegLogin.Text;
+            employee.email = RegEmail.Text;
+            employee.phone = RegPhone.Text;
+            employee.password = RegPassword.Password;
+
+            // Регистрация пользователя
+            if (viewModel.RegisterUser())
             {
-                bool success = await Task.Run(() => _viewModel.RegisterUser());
-
-                if (success)
-                {
-                    MessageBox.Show("Регистрация прошла успешно!");
-                    var authWindow = new Authorisation();
-                    authWindow.Show();
-                    this.Close();
-                }
+                MessageBox.Show("Регистрация успешна!");
+                var authWindow = new Authorisation();
+                authWindow.Show();
+                this.Close();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Ошибка: {ex.Message}");
+                MessageBox.Show("Ошибка регистрации. Попробуйте снова.");
             }
-
         }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             var authWindow = new Authorisation();
             authWindow.Show();
             this.Close();
+        }
+        private bool AreAllFieldsFilled()
+        {
+            bool isValid = true;
+            if (string.IsNullOrWhiteSpace(RegName.Text))
+            {
+                RegName.BorderBrush = Brushes.Red;
+                isValid = false;
+            }
+            if (string.IsNullOrWhiteSpace(RegPosition.Text))
+            {
+                RegPosition.BorderBrush = Brushes.Red;
+                isValid = false;
+            }
+            if (string.IsNullOrWhiteSpace(RegLogin.Text))
+            {
+                RegLogin.BorderBrush = Brushes.Red;
+                isValid = false;
+            }
+            if (string.IsNullOrWhiteSpace(RegEmail.Text))
+            {
+                RegEmail.BorderBrush = Brushes.Red;
+                isValid = false;
+            }
+            if (string.IsNullOrWhiteSpace(RegPhone.Text))
+            {
+                RegPhone.BorderBrush = Brushes.Red;
+                isValid = false;
+            }
+            if (string.IsNullOrWhiteSpace(RegPassword.Password))
+            {
+                RegPassword.BorderBrush = Brushes.Red;
+                isValid = false;
+            }
+            if (!isValid)
+            {
+                MessageBox.Show("Пожалуйста, заполните все поля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            return isValid;
         }
     }
 }

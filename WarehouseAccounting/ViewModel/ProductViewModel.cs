@@ -62,7 +62,7 @@ namespace WarehouseAccounting.ViewModel
 
             AddCommand = new RelayCommand(AddProduct);
             DeleteCommand = new RelayCommand(DeleteProduct);
-            RefreshCommand = new RelayCommand(RefreshProducts);
+            RefreshCommand = new RelayCommand(LoadData);
         }
         private void LoadData()
         {

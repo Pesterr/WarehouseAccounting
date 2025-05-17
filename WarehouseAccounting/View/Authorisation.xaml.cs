@@ -29,13 +29,14 @@ namespace WarehouseAccounting.View
         }
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            // Получаем пароль из PasswordBox
             _viewModel.Employee.password = LogPassword.Password;
 
             if (_viewModel.AuthenticateUser())
             {
                 MessageBox.Show($"Добро пожаловать, {_viewModel.Employee.full_name}!");
-                Main mains = new Main();
+
+                // Передаем текущего пользователя в Main
+                Main mains = new Main(_viewModel.Employee);
                 mains.Show();
                 this.Close();
             }

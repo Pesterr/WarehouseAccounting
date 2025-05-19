@@ -64,7 +64,7 @@ namespace WarehouseAccounting.ViewModel
             DeleteCommand = new RelayCommand(DeleteProduct);
             RefreshCommand = new RelayCommand(LoadData);
         }
-        private void LoadData()
+        public void LoadData()
         {
             var productsFromDb = ProductsDB.GetDb().SelectAll();
             ProductsList = new ObservableCollection<Products>(productsFromDb);

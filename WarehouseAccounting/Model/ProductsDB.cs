@@ -41,14 +41,17 @@ internal class ProductsDB
     internal List<Products> SelectAll()
     {
         List<Products> products = new List<Products>();
-        if (connection == null)
-            return products;
-        if (connection.OpenConnection())
+        if (connection == null || !connection.OpenConnection())
         {
-            var command = connection.CreateCommand("SELECT `product_id`, `product_name`, `category`, `unit`, `price` FROM `Products` ");
-            try
+            MessageBox.Show("Не удалось подключиться к базе данных.");
+            return products;
+        }
+
+        try
+        {
+            var command = connection.CreateCommand("SELECT `product_id`, `product_name`, `category`, `unit`, `price` FROM `Products`");
+            using (MySqlDataReader dr = command.ExecuteReader())
             {
-                MySqlDataReader dr = command.ExecuteReader();
                 while (dr.Read())
                 {
                     int id = dr.GetInt32(0);
@@ -66,15 +69,22 @@ internal class ProductsDB
                     });
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                connection.CloseConnection();
-            }
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Ошибка при загрузке товаров: {ex.Message}");
+            return products;
+        }
+        finally
+        {
+            connection.CloseConnection();
+        }
+
+        if (products.Count == 0)
+        {
+            MessageBox.Show("В базе данных нет товаров.");
+        }
+
         return products;
     }
     internal bool Update(Products edit)

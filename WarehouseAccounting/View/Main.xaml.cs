@@ -26,22 +26,31 @@ namespace WarehouseAccounting.View
         {
             InitializeComponent();
             DataContext = new ProductViewModel();
+
         }
 
         public ProductViewModel ProductViewModel { get; set; }
 
         public ProfileViewModel ProfileViewModel { get; set; }
+        private OrderViewModel _orderViewModel;
+
+        private readonly ProductViewModel _productViewModel;
+        private readonly ProfileViewModel _profileViewModel;
+
         public Main(Employees currentUser)
         {
             InitializeComponent();
 
-            ProfileViewModel = new ProfileViewModel(currentUser);
-            DataContext = this;
-            // Создаём ProductViewModel
-            ProductViewModel = new ProductViewModel();
+            // Создаём ViewModel'и с правильными данными
+            _productViewModel = new ProductViewModel();
+            _orderViewModel = new OrderViewModel();
+            _profileViewModel = new ProfileViewModel(currentUser); // Передаем пользователя
 
-            // Устанавливаем DataContext для вкладки "Товары"
-            ProductsTabItem.DataContext = ProductViewModel;
+            // Устанавливаем DataContext для вкладок
+            ProductsTabItem.DataContext = _productViewModel;
+            MainTabControl.DataContext = _orderViewModel;
+            ProfileTabItem.DataContext = _profileViewModel; // Теперь привязываем профиль к данным
+            DataContext = this;
         }
 
         private void ProductAdd(object sender, RoutedEventArgs e)
@@ -52,7 +61,15 @@ namespace WarehouseAccounting.View
         }
         private void OrderAdd(object sender, RoutedEventArgs e)
         {
-            
+            var orderViewModel = MainTabControl.DataContext as OrderViewModel;
+            if (orderViewModel != null)
+            {
+                var addOrderWindow = new AddOrderWindow(orderViewModel);
+                if (addOrderWindow.ShowDialog() == true)
+                {
+                    orderViewModel.RefreshOrders(); // Обновляем список заказов
+                }
+            }
         }
 
         private void EditProduct_Click(object sender, RoutedEventArgs e)
@@ -62,7 +79,7 @@ namespace WarehouseAccounting.View
                 var editWindow = new ProductEditWindow(selectedProduct);
                 if (editWindow.ShowDialog() == true)
                 {
-                    ((ProductViewModel)DataContext).RefreshCommand.Execute(null);
+                    
                 }
             }
             else
@@ -93,6 +110,10 @@ namespace WarehouseAccounting.View
             {
                 ((ProfileViewModel)DataContext).ConfirmPassword = passwordBox.Password;
             }
+        }
+        private void LoadOrders()
+        {
+            MainTabControl.DataContext = new OrderViewModel();
         }
     }
 }

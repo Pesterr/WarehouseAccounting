@@ -12,64 +12,38 @@
 
         <!-- Табы -->
         <TabControl Name="MainTabControl" Margin="5" Background="#D5E8D4" >
-
-
             <!-- Заказы -->
             <TabItem Header="Заказы" Width="100">
                 <Grid>
-
-                    <Grid.ColumnDefinitions>
-
-                        <ColumnDefinition Width="165*"/>
-                        <ColumnDefinition Width="94*"/>
-                        <ColumnDefinition Width="525*"/>
-
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Заголовок -->
-                    <StackPanel Grid.ColumnSpan="2" Margin="0,0,0,366" Grid.RowSpan="2">
-
+                    <!-- Панель действий -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right" Margin="5">
+                        <Button Content="Добавить заказ" Width="120" Margin="5" Click="OrderAdd"/>
+                        <Button Content="Редактировать" Width="120" Margin="5"
+                    Command="{Binding EditOrderCommand}"
+                    CommandParameter="{Binding SelectedOrder}"/>
+                        <Button Content="Обновить" Width="100" Margin="5"
+                    Command="{Binding RefreshOrderCommand}" Background="#B9E0A5"/>
+                        <Button Content="Удалить" Width="100" Margin="5"
+                    Command="{Binding DeleteOrderCommand}"
+                    CommandParameter="{Binding SelectedOrder}"/>
                     </StackPanel>
-                    <TextBlock VerticalAlignment="Center" Text="Количество активных заказов:" Margin="5,0,0,0" HorizontalAlignment="Left" Grid.ColumnSpan="2"/>
-                    <Button Content="Добавить заказ" Margin="370,0,0,0" Grid.Column="2" Width="150" VerticalAlignment="Center" HorizontalAlignment="Left" Click="OrderAdd"/>
-                    <DataGrid ItemsSource="{Binding Orders}" Grid.Row="1" AutoGenerateColumns="False" Margin="5,5,5,5" Background="#D5E8D4" Grid.ColumnSpan="3" >
-                        <DataGrid.Columns >
-                            <DataGridTextColumn Header="№" Binding="{Binding order_id}" Width="50" />
-                            <DataGridTextColumn Header="Имя заказчика" Binding="{Binding client_name}" Width="150"/>
-                            <DataGridTextColumn Header="ID Товара" Binding="{Binding product_id}" Width="100"/>
-                            <DataGridTextColumn Header="Название товара" Binding="{Binding product_name}" Width="200"/>
-                            <DataGridTextColumn Header="Количество" Binding="{Binding unit}" Width="100"/>
-                            <DataGridTemplateColumn Header="Статус">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <!-- ToggleButton для переключения статуса -->
-                                        <ToggleButton Content="{Binding StatusText}" 
-                                  IsChecked="{Binding IsAssembled}"
-                                  Width="100"
-                                  >
-                                            <ToggleButton.Style>
-                                                <Style TargetType="ToggleButton">
-                                                    <Setter Property="Background" Value="LightCoral"/>
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsChecked" Value="True">
-                                                            <Setter Property="Background" Value="LightGreen"/>
-                                                            <Setter Property="Content" Value="Собран"/>
-                                                        </Trigger>
-                                                        <Trigger Property="IsChecked" Value="False">
-                                                            <Setter Property="Background" Value="LightCoral"/>
-                                                            <Setter Property="Content" Value="Не собран"/>
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </ToggleButton.Style>
-                                        </ToggleButton>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
+
+                    <!-- Таблица заказов -->
+                    <DataGrid ItemsSource="{Binding Orders}" 
+                          SelectedItem="{Binding SelectedOrder}"
+                          AutoGenerateColumns="False" 
+                          Grid.Row="1" Margin="5" Background="#D5E8D4">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="№" Binding="{Binding order_id}" Width="50"/>
+                            <DataGridTextColumn Header="Имя клиента" Binding="{Binding client_name}" Width="150"/>
+                            <DataGridTextColumn Header="ID Товара" Binding="{Binding order_product}" Width="100"/>
+                            <DataGridTextColumn Header="Название товара" Binding="{Binding ProductName}" Width="200"/>
+                            <DataGridTextColumn Header="Количество" Binding="{Binding quantity}" Width="100"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -77,7 +51,7 @@
 
             <!-- Товары -->
             <TabItem Header="Товары" Width="100" Height="20" VerticalAlignment="Bottom" x:Name="ProductsTabItem">
-                <Grid DataContext="{Binding Source={StaticResource ProductViewModel}}">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="533*"/>
                         <ColumnDefinition Width="251*"/>
@@ -145,16 +119,17 @@
 
             <!-- Профиль -->
             <TabItem Header="Профиль" Width="100" HorizontalAlignment="Right" x:Name="ProfileTabItem">
-                <Grid DataContext="{Binding ProfileViewModel}">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="184"/>
+                        <ColumnDefinition Width="48.397"/>
+                        <ColumnDefinition Width="135.603"/>
                         <ColumnDefinition Width="66"/>
                         <ColumnDefinition Width="280"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <!-- Редактирование данных -->
-                    <StackPanel Grid.Column="0" Margin="10,10,10,10" Grid.ColumnSpan="2">
+                    <StackPanel Grid.Column="0" Margin="10,10,10,10" Grid.ColumnSpan="3">
                         <TextBlock Text="Редактирование данных" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="ФИО:" Width="60" VerticalAlignment="Center"/>
@@ -175,7 +150,7 @@
                     </StackPanel>
 
                     <!-- Изменение пароля -->
-                    <StackPanel Grid.Column="2" Margin="10,10,10,10">
+                    <StackPanel Grid.Column="3" Margin="10,10,10,10">
                         <TextBlock Text="Изменение пароля" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Старый пароль:" Width="90" VerticalAlignment="Center"/>
@@ -199,7 +174,7 @@
                 Margin="42,0,0,10"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
-                Grid.Column="2"
+                Grid.Column="3"
                 Command="{Binding SaveCommand}"/>
                 </Grid>
             </TabItem>

@@ -56,7 +56,7 @@ namespace WarehouseAccounting.ViewModel
 
         public ProfileViewModel(Employees user)
         {
-            CurrentUser = user ?? new Employees();
+            CurrentUser = user ?? new Employees(); // Подстраховка
             SaveCommand = new RelayCommand(SaveProfile);
         }
 
@@ -85,14 +85,14 @@ namespace WarehouseAccounting.ViewModel
                 return;
             }
 
-            // Если указан старый пароль — проверяем его и обновляем
-            if (!string.IsNullOrWhiteSpace(OldPassword) || !string.IsNullOrWhiteSpace(NewPassword) || !string.IsNullOrWhiteSpace(ConfirmPassword))
+            // Если указан старый пароль — проверяем его
+            if (!string.IsNullOrWhiteSpace(OldPassword) ||
+                !string.IsNullOrWhiteSpace(NewPassword) ||
+                !string.IsNullOrWhiteSpace(ConfirmPassword))
             {
                 var db = EmployeesDB.GetDb();
-
                 var storedUser = db.SelectAll().FirstOrDefault(u => u.id == CurrentUser.id);
 
-                // Проверка старого пароля
                 if (storedUser?.password != OldPassword)
                 {
                     MessageBox.Show("Старый пароль неверен");
@@ -126,7 +126,6 @@ namespace WarehouseAccounting.ViewModel
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
